@@ -94,7 +94,7 @@ const factory = ((options, fn) => {
         }
 
         // new result
-        const packed = O[key] = [fn.apply(this, args) as T, -1] as [T, number]
+        const packed = O[key] = [fn.apply(this, args) as unknown as T, -1] as [T, number]
 
         if (maxItems) {
             // remove the previous item from list
