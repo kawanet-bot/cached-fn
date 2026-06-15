@@ -11,7 +11,7 @@ it("cachedFn.flush()", async () => {
     assert.equal(counter("b"), 2)
     assert.equal(counter("b"), 2)
 
-    cachedFn.flush();
+    cachedFn.flush()
 
     assert.equal(counter("b"), 3)
     assert.equal(counter("b"), 3)

@@ -5,10 +5,10 @@ import {it} from "node:test"
 it("this", async () => {
     class MyClass {
         a = 0
-        b = 0;
+        b = 0
         inc = cachedFn(function (this: MyClass, key: string): number {
             assert.ok(this instanceof MyClass)
-            return ++(this[key.toLowerCase() as keyof MyClass] as number);
+            return ++(this[key.toLowerCase() as keyof MyClass] as number)
         })
     }
 

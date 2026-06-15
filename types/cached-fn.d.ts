@@ -12,14 +12,14 @@ export interface cachedFn {
      * - Ideal for expensive or resource-intensive synchronous functions.
      * - Lazy: computes and caches the result on the first invocation.
      * - To invalidate all stored results, call `cachedFn.flush()`.
-     */<T, U extends unknown[]>(fn: (...args: U) => T): ((...args: U) => T);
+     */<T, U extends unknown[]>(fn: (...args: U) => T): ((...args: U) => T)
 
-    <T, U extends unknown[]>(options: CachedFnOptions, fn: (...args: U) => T): ((...args: U) => T);
+    <T, U extends unknown[]>(options: CachedFnOptions, fn: (...args: U) => T): ((...args: U) => T)
 
     /**
      * @deprecated
      */
-    cycle<T, U extends unknown[]>(ms: number, fn: (...args: U) => T): ((...args: U) => T);
+    cycle<T, U extends unknown[]>(ms: number, fn: (...args: U) => T): ((...args: U) => T)
 
     /**
      * `cachedFn.flush()` clears all caches created by both `cachedFn()` and `cachedFn.cycle()`.
@@ -30,7 +30,7 @@ export interface cachedFn {
      * @example
      * process.on("SIGHUP", () => cachedFn.flush());
      */
-    flush(): void;
+    flush(): void
 }
 
 export interface CachedFnOptions {
@@ -62,4 +62,4 @@ export interface CachedFnOptions {
     maxItems?: number
 }
 
-export const cachedFn: cachedFn;
+export const cachedFn: cachedFn
