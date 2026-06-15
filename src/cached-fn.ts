@@ -6,7 +6,7 @@
 // types through `package.json` `exports` — the same path an external
 // consumer would take. If the `exports.types` mapping ever breaks, the
 // build fails here.
-import type * as declared from "cached-fn";
+import type * as declared from "cached-fn"
 
 type N = [unknown, number?] // Cached result and expiration timestamp
 type O = Record<string, N>  // Maps argument key to cached result
@@ -18,17 +18,17 @@ type S = Record<number, R>  // Maps cycle size (ms) to all caches in that window
 const isPromise = <T>(value: any): value is Promise<T> => (value && "function" === typeof value.then)
 
 // Storage
-let S: S = {};
+let S: S = {}
 
 // Index counter
-let Index = 0;
+let Index = 0
 
 // Array.prototype.slice
-const slice = [].slice;
+const slice = [].slice
 
 const factory = ((options, fn) => {
-    const idx = ++Index;
-    const fnLen = fn.length;
+    const idx = ++Index
+    const fnLen = fn.length
 
     /**
      * Time-window size in milliseconds for cache grouping.
@@ -60,22 +60,22 @@ const factory = ((options, fn) => {
 
     return function <T>(this: unknown): T {
         // eslint-disable-next-line prefer-rest-params
-        const args = arguments as ArrayLike<unknown> as Parameters<typeof fn>;
-        const slot = +cycle && Math.floor(Date.now() / cycle);
+        const args = arguments as ArrayLike<unknown> as Parameters<typeof fn>
+        const slot = +cycle && Math.floor(Date.now() / cycle)
 
-        let R = S[cycle];
-        let Q = R && R[slot];
+        let R = S[cycle]
+        let Q = R && R[slot]
         if (!Q) {
             R = S[cycle] = {}
             Q = R[slot] = {}
         }
 
-        const P = Q[idx] || (Q[idx] = []);
+        const P = Q[idx] || (Q[idx] = [])
 
         const argLen = args.length
-        let key: string;
+        let key: string
         if (!fnLen && !argLen) {
-            key = "[]";
+            key = "[]"
         } else {
             const array: unknown[] = slice.call(args)
             if (argLen < fnLen) array.length = fnLen
@@ -98,9 +98,9 @@ const factory = ((options, fn) => {
 
         if (maxItems) {
             // remove the previous item from list
-            const position = P.findIndex(p => p === O);
+            const position = P.findIndex(p => p === O)
             if (position !== -1) {
-                P.splice(position, 1);
+                P.splice(position, 1)
             }
 
             // add the new item to the end of list
@@ -108,7 +108,7 @@ const factory = ((options, fn) => {
 
             // remove the oldest item when the cache exceeds maxItems
             if (P.length > maxItems) {
-                P.shift();
+                P.shift()
             }
         }
 
@@ -136,7 +136,7 @@ const factory = ((options, fn) => {
                 delete O[key]
             }
         }
-    };
+    }
 }) as declared.cachedFn
 
 // cachedFn(fn)
@@ -147,10 +147,10 @@ export const cachedFn = ((options, fn) => {
         options = {}
     }
     return factory(options, fn)
-}) as declared.cachedFn;
+}) as declared.cachedFn
 
 // cachedFn.cycle(ms, fn)
 cachedFn.cycle = (ms, fn) => factory({cycle: ms}, fn)
 
 // cachedFn.flush()
-cachedFn.flush = () => (S = {});
+cachedFn.flush = () => (S = {})
