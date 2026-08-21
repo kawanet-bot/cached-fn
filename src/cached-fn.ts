@@ -35,7 +35,7 @@ const factory = ((options, fn) => {
      * All caches in the same window are cleared together at window end.
      * This is a fixed time slot, not a duration from completion.
      */
-    const cycle = Number(options.cycle) || 0
+    const cycle = +options.cycle! || 0
 
     /**
      * Cache duration in milliseconds when resolved.
@@ -43,20 +43,20 @@ const factory = ((options, fn) => {
      * @default -1
      */
     let positiveCache = options.cache
-    if (positiveCache !== 0) positiveCache = Number(positiveCache) || -1
+    if (positiveCache !== 0) positiveCache = +positiveCache! || -1
 
     /**
      * Cache duration in milliseconds when rejected.
      * -1: no expiration. 0: do not cache.
      * @default 0
      */
-    const negativeCache = Number(options.negativeCache) || 0
+    const negativeCache = +options.negativeCache! || 0
 
     /**
      * Maximum number of items in the cache.
      * @default 0 - unlimited.
      */
-    const maxItems = Number(options.maxItems) || 0
+    const maxItems = +options.maxItems! || 0
 
     return function <T>(this: unknown): T {
         // eslint-disable-next-line prefer-rest-params
