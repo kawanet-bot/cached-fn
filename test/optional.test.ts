@@ -4,7 +4,7 @@ import {it} from "node:test"
 
 it("single argument", async () => {
     let count = 0
-    const fn = cachedFn((_a?: string) => ++count)
+    const fn = cachedFn((_a?: string | null) => ++count)
     assert.equal(fn(), 1)
 
     assert.equal(fn("a"), 2)
@@ -21,7 +21,7 @@ it("single argument", async () => {
 
 it("two arguments", async () => {
     let count = 0
-    const fn = cachedFn((_a?: string, _b?: string) => ++count)
+    const fn = cachedFn((_a?: string | null, _b?: string | null) => ++count)
     assert.equal(fn(), 1)
 
     assert.equal(fn("a"), 2)
@@ -39,7 +39,7 @@ it("two arguments", async () => {
 
 it("three arguments", async () => {
     let count = 0
-    const fn = cachedFn((_a?: string, _b?: string, _c?: string) => ++count)
+    const fn = cachedFn((_a?: string | null, _b?: string | null, _c?: string | null) => ++count)
     assert.equal(fn(), 1)
 
     assert.equal(fn("a"), 2)
