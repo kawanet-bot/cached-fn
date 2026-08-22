@@ -31,6 +31,8 @@ const rollupConfig: RollupOptions = {
                 {find: "node:test", replacement: fileURLToPath(new URL("./node-test.shim.ts", import.meta.url))},
                 {find: "node:assert", replacement: fileURLToPath(new URL("./node-assert.shim.ts", import.meta.url))},
                 {find: "cached-fn", replacement: fileURLToPath(new URL("../browser/import.js", import.meta.url))},
+                // The suites spell the entry as a relative path; same shim either way.
+                {find: /^(\.\.\/)+src\/cached-fn\.ts$/, replacement: fileURLToPath(new URL("../browser/import.js", import.meta.url))},
             ],
         }),
 

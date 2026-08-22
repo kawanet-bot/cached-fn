@@ -1,6 +1,6 @@
-import {cachedFn} from "cached-fn"
 import {strict as assert} from "node:assert"
 import {it} from "node:test"
+import {cachedFn} from "../src/cached-fn.ts"
 
 const WAIT = (ms: number) => new Promise(resolve => setTimeout(() => resolve(ms), ms))
 
