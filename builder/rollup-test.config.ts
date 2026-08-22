@@ -11,7 +11,10 @@ import {showFiles} from "./show-files.ts"
 // shims, and the package name resolves to the global left behind by
 // dist/*.min.js, so the browser exercises the shipped bundle.
 const rollupConfig: RollupOptions = {
-    input: "../test/*.test.ts",
+    // 90.entrypoint tests require() the shipped files; Node-only, no browser
+    // shim. multi-entry extends `input` with include/exclude filters, which
+    // RollupOptions cannot express -- hence the assertion.
+    input: {include: ["../test/*.test.ts"], exclude: ["../test/90.*"]} as unknown as RollupOptions["input"],
 
     output: {
         file: "../browser/tests/bundled.js",
