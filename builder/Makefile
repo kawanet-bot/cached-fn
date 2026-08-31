@@ -118,6 +118,6 @@ test-full: all
 ####
 
 clean:
-	/bin/rm -fr $(ALL) $(BUILDER_TEST_DST)
+	/bin/rm -fr $(ALL) $(BUILDER_TEST_DST) $(PKG_DST)
 
 .PHONY: all clean test test-full is-buildable is-not-buildable
