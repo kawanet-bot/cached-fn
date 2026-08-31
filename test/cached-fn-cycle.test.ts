@@ -6,10 +6,11 @@ it("cachedFn.cycle()", async () => {
     const cycle = 100
     const slotOf = () => Math.floor(Date.now() / cycle)
 
-    // Sleeping into the next window lands just after a boundary, which
-    // leaves nearly the whole window before the next one: the margin
-    // matters, as the calls below must run within a single window.
-    const nextWindow = () => new Promise(resolve => setTimeout(resolve, cycle - (Date.now() % cycle)))
+    // Sleeping into the next window leaves most of the window ahead for
+    // the batch, which must run within a single window. Aim a bit past
+    // the boundary, not at it: wall-clock deadline vs monotonic timer
+    // drift could otherwise land the batch just short of a boundary.
+    const nextWindow = () => new Promise(resolve => setTimeout(resolve, cycle + cycle / 10 - (Date.now() % cycle)))
 
     // A batch of calls straddling a cycle boundary recomputes once more
     // than expected. Slot guards detect that case and retry with a fresh
