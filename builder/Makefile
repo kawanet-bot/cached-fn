@@ -13,7 +13,7 @@ CJS_DST := ../dist/cached-fn.cjs
 MINJS_DST := ../dist/cached-fn.min.js
 PKG_DST := ../dist/package.json
 BROWSER_TEST_DST := ../browser/tests/bundled.js
-BUILDER_TEST_DST := ../builder/tests/bundled.js
+BUILDER_TEST_DST := ./tests/bundled.mjs
 
 MJS_CONFIG := ./rollup-mjs.config.ts
 CJS_CONFIG := ./rollup-cjs.config.ts
