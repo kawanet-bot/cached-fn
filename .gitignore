@@ -9,10 +9,14 @@
 .Thumbs
 ._*
 .idea/
+.pnpm-debug.log*
 .vscode/
+browser/tests/
 builder/tests/
 dist/
 node_modules
+nohup.out
 npm-debug.log*
 package-lock.json
+pnpm-lock.yaml
 ~$*
