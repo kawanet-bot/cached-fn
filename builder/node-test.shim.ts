@@ -4,7 +4,7 @@
 // `globalThis` after `mocha.setup` runs in tests.html. `it` is
 // special-cased only when called as `it(name, {timeout: ms}, fn)`
 // to bridge node:test's options-form to mocha's `this.timeout(ms)`.
-// `.skip` and `.only` are attached so conditional patterns like
+// `.skip` is attached so conditional patterns like
 // `(cond ? it : it.skip)(name, fn)` keep working in the browser.
 
 type Body = () => unknown
@@ -16,7 +16,7 @@ type ItFn = (name: string, fn: (this: MochaThis) => unknown) => void
 
 const g = globalThis as unknown as {
     describe: (name: string, fn: Suite) => void
-    it: ItFn & {skip: ItFn; only: ItFn}
+    it: ItFn & {skip: ItFn}
     before: (fn: Body) => void
     after: (fn: Body) => void
 }
@@ -25,10 +25,10 @@ export const {describe, before, after} = g
 
 type ItOverload = ((name: string, fn: Body) => void) & ((name: string, opts: Options, fn: Body) => void)
 
-const itImpl = (...args: [string, Body] | [string, Options, Body]): void => {
+const wrapIt = (itFn: ItFn): ItOverload => (...args: [string, Body] | [string, Options, Body]): void => {
     if (args.length === 3) {
         const [name, opts, fn] = args
-        g.it(name, function (this: MochaThis) {
+        itFn(name, function (this: MochaThis) {
             if (opts && "number" === typeof opts.timeout) {
                 this.timeout(opts.timeout)
             }
@@ -36,9 +36,8 @@ const itImpl = (...args: [string, Body] | [string, Options, Body]): void => {
         })
         return
     }
-    g.it(...args)
+    itFn(...args)
 }
 
-export const it = itImpl as ItOverload & {skip: ItFn; only: ItFn}
-it.skip = g.it.skip
-it.only = g.it.only
+export const it = wrapIt(g.it) as ItOverload & {skip: ItOverload}
+it.skip = wrapIt(g.it.skip)
